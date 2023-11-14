@@ -4,8 +4,6 @@ import java.util.Scanner;
 
 public class House {
 
-    static int countEntrance = 0;
-
     public void getInfoAboutApartment() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите количество этажей:");
@@ -19,30 +17,30 @@ public class House {
 
         scanner.close();
 
-        int totalApartmentsInEntrance = floorsCount * 4;
-        int totalApartmentsInHouse = entranceCount * totalApartmentsInEntrance;
+        int totalApartmentsEntrance = floorsCount * 4;
+        int totalApartmentsQuantity = entranceCount * totalApartmentsEntrance;
+
+        int countEntrance = 0;
 
         for (int i = 1; i <= entranceCount; i++) {
-            if (apartmentNumber <= totalApartmentsInEntrance) {
+            if (apartmentNumber <= totalApartmentsEntrance) {
                 countEntrance = i;
                 break;
-            } else {
-                totalApartmentsInEntrance = totalApartmentsInEntrance * 2;
             }
+            totalApartmentsEntrance = totalApartmentsEntrance * 2;
         }
 
-        if (apartmentNumber >= totalApartmentsInHouse + 1) {
+        if (apartmentNumber > totalApartmentsQuantity) {
             System.out.println("Квартиры с таким номером в доме нет");
-        } else if (apartmentNumber % 4 == 2) {
-
-            System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
-                    " слева от лифта, вправо");
         } else if (apartmentNumber % 4 == 0) {
             System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
                     " справа от лифта, вправо");
         } else if (apartmentNumber % 4 == 1) {
             System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
                     " слева от лифта, влево");
+        } else if (apartmentNumber % 4 == 2) {
+            System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
+                    " слева от лифта, вправо");
         } else {
             System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
                     " справа от лифта, влево");
