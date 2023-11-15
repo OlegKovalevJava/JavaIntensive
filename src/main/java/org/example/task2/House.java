@@ -7,43 +7,52 @@ public class House {
     public void getInfoAboutApartment() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите количество этажей:");
-        int floorsCount = scanner.nextInt();
+        int floorsQuantity = scanner.nextInt();
 
         System.out.println("Введите количество подъездов:");
-        int entranceCount = scanner.nextInt();
+        int entrancesQuantity = scanner.nextInt();
 
         System.out.println("Введите номер интересующей вас квартиры:");
         int apartmentNumber = scanner.nextInt();
 
         scanner.close();
 
-        int totalApartmentsEntrance = floorsCount * 4;
-        int totalApartmentsQuantity = entranceCount * totalApartmentsEntrance;
+        final int totalApartmentsFloor = 4; // квартир на этаже фиксированное количество
+        int totalApartmentsEntrance = floorsQuantity * totalApartmentsFloor; // определяем кол-во квартир в подъезде
+        int totalApartmentsQuantity = entrancesQuantity * totalApartmentsEntrance; // определяем кол-во квартир в доме
+        // определяем номер подъезда
+        int entranceNumber = 0;
 
-        int countEntrance = 0;
-
-        for (int i = 1; i <= entranceCount; i++) {
+        for (int i = 1; i <= entrancesQuantity; i++) {
             if (apartmentNumber <= totalApartmentsEntrance) {
-                countEntrance = i;
+                entranceNumber = i;
                 break;
             }
             totalApartmentsEntrance = totalApartmentsEntrance * 2;
         }
-
-        if (apartmentNumber > totalApartmentsQuantity) {
+        // определяем есть ли квартира в доме
+        if (apartmentNumber < 1 || apartmentNumber > totalApartmentsQuantity) {
             System.out.println("Квартиры с таким номером в доме нет");
-        } else if (apartmentNumber % 4 == 0) {
-            System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
-                    " справа от лифта, вправо");
-        } else if (apartmentNumber % 4 == 1) {
-            System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
-                    " слева от лифта, влево");
-        } else if (apartmentNumber % 4 == 2) {
-            System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
-                    " слева от лифта, вправо");
-        } else {
-            System.out.println(apartmentNumber + " кв - " + countEntrance + " подъезд," +
-                    " справа от лифта, влево");
+            return;
         }
+        // определяем расположение квартиры относительно лифта
+        String apartmentLocation = switch (apartmentNumber % totalApartmentsFloor) {
+            case (0) -> "справа от лифта, вправо";
+            case (1) -> "слева от лифта, влево";
+            case (2) -> "слева от лифта, вправо";
+            case (3) -> "справа от лифта, влево";
+            default -> "";
+        };
+        //определяем номер подъезда
+        int floorNumber;
+
+        if (apartmentNumber % totalApartmentsFloor == 0) {
+            floorNumber = (apartmentNumber / totalApartmentsFloor) - floorsQuantity * (entranceNumber - 1);
+        } else {
+            floorNumber = (apartmentNumber / totalApartmentsFloor + 1) - floorsQuantity * (entranceNumber - 1);
+        }
+
+        System.out.println(apartmentNumber + " кв - " + entranceNumber + " подъезд, " + floorNumber + " этаж, "
+                + apartmentLocation);
     }
 }
